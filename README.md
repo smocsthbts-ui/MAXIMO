@@ -1,21 +1,23 @@
-# Maximo-AI — Milestone 1 Starter
+# Maximo-AI — Development Starter
 
-Starter source code for the Maximo-AI CMMS/EAM application.
+Maximo-AI is a development starter for a CMMS/EAM maintenance operations application.
 
-## Stack
-- Frontend: React + TypeScript + Vite
-- API: Cloudflare Workers + TypeScript
-- Database: Cloudflare D1 (SQLite)
-- Phase 1 AI integration: intentionally not connected
+## Repository structure
 
-## Repository layout
-- `apps/web`: Dashboard UI
-- `apps/api`: Worker API
-- `database/migrations`: D1 schema migrations
+- `apps/web`: React + TypeScript + Vite dashboard
+- `apps/api`: Cloudflare Workers API
+- `database/migrations`: Cloudflare D1 schema migration
+- `index.html`: Standalone dashboard preview shell; the Vite application entry point is `apps/web/index.html`
 
-## Local development
+## Technology
 
-Install dependencies in each app:
+- React, TypeScript, Vite
+- Cloudflare Workers
+- Cloudflare D1 (SQLite)
+
+## Run the frontend locally
+
+Requirements: Node.js and npm.
 
 ```bash
 cd apps/web
@@ -23,7 +25,9 @@ npm install
 npm run dev
 ```
 
-In another terminal, run the API locally after configuring a local D1 database:
+The frontend reads `VITE_API_BASE_URL`. Copy `.env.example` to `.env.local` if you need to override the development API URL.
+
+## Run the API locally
 
 ```bash
 cd apps/api
@@ -31,10 +35,23 @@ npm install
 npx wrangler dev
 ```
 
-The UI reads `VITE_API_BASE_URL`. If it is unset, it calls `/api`; configure a local proxy or set the local Worker URL in `apps/web/.env.local`.
+The Worker configuration binds to the development D1 database. Confirm the configured account and database before running migrations or deploying.
 
-## D1 setup
-The API Worker is configured in `apps/api/wrangler.jsonc`. Use separate Development and Production databases and configure secrets before production deployment.
+## Cloudflare Pages build settings
 
-## Important limitations
-This milestone provides a dashboard shell, health endpoint, summary endpoint, and initial schema. Authentication, session management, authorization middleware, SR/WO workflows, PM scheduler, imports, notifications, and email delivery are not implemented yet. Dashboard values use demo fallback data when the API is unavailable. Do not expose this starter to production until authentication, site-level authorization, rate limiting, monitoring, migrations, backups, and security review are implemented and tested.
+For a Pages project using the Vite frontend, set:
+
+- Production branch: `main`
+- Root directory: `apps/web`
+- Build command: `npm run build`
+- Build output directory: `dist`
+
+The Pages project must be connected to this GitHub repository in Cloudflare to enable automatic builds and deployments. A successful GitHub upload alone does not prove a Pages deployment succeeded.
+
+## Current milestone and limitations
+
+The current UI displays dashboard metrics from the API and refreshes periodically. The API currently supports health and dashboard summary endpoints. The D1 migration defines foundational organization/site, user/role, asset/location, service request, job plan, preventive maintenance, work order, work log, PM occurrence, and audit-log tables.
+
+Authentication, session handling, role/site authorization, full SR/WO create/update workflows, PM generation, imports, notifications, email delivery, and production security hardening are not implemented. Dashboard metrics will be zero when the development database contains no matching records. Do not use this starter for production operations until security controls, workflows, data migration, backup/recovery, and operational monitoring are implemented and tested.
+
+Never commit real passwords, API tokens, or secrets.
