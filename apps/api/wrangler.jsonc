@@ -1,0 +1,22 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "maximo-ai-api-dev",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-26",
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  },
+  "vars": {
+    "APP_ENV": "development",
+    "FRONTEND_ORIGIN": "https://maximo-ai-dev.pages.dev"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "maximo-ai-dev",
+      "database_id": "e2eb129e-1cdd-4653-b91f-9ea186bd0690",
+      "migrations_dir": "../../database/migrations"
+    }
+  ]
+}
